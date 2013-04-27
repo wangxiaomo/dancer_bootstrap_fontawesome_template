@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SCRIPT=$(readlink -f "$0") || exit 1
+SCRIPT=$(perl -MCwd -e '$f=Cwd::realpath($ARGV[0]); die unless -e $f; print $f' "$0") || exit 1;
 DANCER_BASE_DIR=$(dirname $(dirname "$SCRIPT")) || exit 1
 DANCER_PUBLIC="$DANCER_BASE_DIR/public"
 
@@ -31,7 +31,14 @@ rm -f "fontawesome"
 
 ## Download the latest fontawesome
 echo "Downloading latest fontawesome"
-wget --no-verbose --no-check-certificate -O fontawesome.zip https://github.com/FortAwesome/Font-Awesome/zipball/master || exit 1
+if which wget > /dev/null ; then
+	wget --no-verbose --no-check-certificate -O fontawesome.zip https://github.com/FortAwesome/Font-Awesome/zipball/master || exit 1
+elif which curl > /dev/null ; then
+	curl --location --silent --show-error --insecure --output fontawesome.zip https://github.com/FortAwesome/Font-Awesome/zipball/master || exit 1
+else
+	echo "Error: can't find wget or curl, needed to download fontawesome." >&2
+	exit 1
+fi
 echo "Unzipping..."
 unzip -q fontawesome.zip || exit 1
 

@@ -4,7 +4,15 @@ use strict;
 use warnings;
 use Cwd;
 use Sys::Hostname;
-use Data::Dump qw/dump/;
+use examples::simple_form;
+use examples::navbar_login;
+use examples::tabs;
+use examples::show_file;
+use examples::photo_gallery;
+use examples::markdown;
+use examples::template_plugins;
+use examples::error_handling;
+use examples::dynamic_content;
 
 our $VERSION = '0.1';
 
